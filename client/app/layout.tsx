@@ -6,6 +6,7 @@ import { generateSEO, generateViewport } from "@/config/seo/seo";
 import Footer from "../components/Footer";
 import ScrollToTop from "../components/reusables/ScrollToTop";
 import { Toaster } from "@/components/ui/sonner";
+import QueryProvider from "@/providers/QueryProvider";
 // import { ArticleJsonLd, DefaultSeo } from "next-seo";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "700", "900"], variable: "--font-poppins" });
@@ -26,7 +27,9 @@ export default function RootLayout({
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange>
-          {/* <Navbar /> */}
+          <QueryProvider>
+
+          <Navbar />
           {/* Blur background elements */}
           {/* <div className="absolute top-[0%] left-[5%] h-[35rem] w-[45rem] bg-pink-200  rounded-full blur-3xl dark:bg-gray-800 "></div>
           <div className="absolute top-[0%] right-[5%] h-[35rem] w-[45rem] bg-blue-200  rounded-full blur-3xl dark:bg-gray-700"></div> */}
@@ -35,7 +38,8 @@ export default function RootLayout({
           </main>
           <footer>
             <Footer/>
-          </footer>
+            </footer>
+          </QueryProvider>
           <Toaster toastOptions={{ duration: 3000, }} theme="light" />
           <ScrollToTop  />
         </ThemeProvider>
