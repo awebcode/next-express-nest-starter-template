@@ -1,0 +1,12 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres:16.0-alpine3.18
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: template-nestjs
+    ports:
+      - "5432:5432"
+    restart: always  # This will restart the container automatically

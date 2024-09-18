@@ -1,0 +1,250 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  USER
+  GUEST
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  password      String
+  name          String
+  emailVerified DateTime?
+  image         String?
+  role          Role      @default(USER)
+  accounts      Account[]
+  sessions      Session[]
+  providerId    String
+  cart          Cart?
+  orders        Order[]
+  reviews       Review[]
+  addresses     Address[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([email])
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+model Category {
+  id       String    @id @default(uuid())
+  name     String
+  slug     String    @unique // SEO-friendly URL
+  products Product[]
+
+  @@index([slug])
+}
+
+model Product {
+  id              String           @id @default(uuid())
+  name            String
+  description     String
+  price           Decimal
+  discountedPrice Decimal? // Nullable field for discounted price
+  stock           Int              @default(0)
+  slug            String           @unique // Unique slug for SEO
+  categories      Category[]
+  images          ProductImage[]
+  reviews         Review[] // Relation to product reviews
+  variants        ProductVariant[] // Product variants (size, color, etc.)
+  orders          OrderItem[]
+  coupons         Coupon[]
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  CartItem        CartItem[]
+
+  // Indexing
+  @@index([price]) // Index on price for filtering and sorting
+  @@index([name]) // Index on product name for quick searching
+  @@index([slug]) // Index for efficient slug-based queries
+  @@index([stock]) // Index on stock for inventory management
+}
+
+model ProductImage {
+  id        String  @id @default(uuid())
+  url       String
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model ProductVariant {
+  id        String  @id @default(uuid())
+  name      String
+  value     String
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  rating    Int      @default(1) // Rating from 1 to 5
+  comment   String?
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@index([productId])
+  @@index([userId])
+}
+
+model Order {
+  id         String      @id @default(uuid())
+  userId     String
+  user       User        @relation(fields: [userId], references: [id])
+  totalPrice Decimal
+  status     OrderStatus @default(PENDING)
+  items      OrderItem[]
+  payment    Payment?
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  @@index([userId])
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  orderId   String
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int     @default(1)
+  price     Decimal
+  order     Order   @relation(fields: [orderId], references: [id])
+
+  @@index([productId])
+}
+
+model Cart {
+  id        String     @id @default(uuid())
+  userId    String     @unique
+  user      User       @relation(fields: [userId], references: [id])
+  items     CartItem[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model CartItem {
+  id        String  @id @default(uuid())
+  cartId    String
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int     @default(1)
+  cart      Cart    @relation(fields: [cartId], references: [id])
+
+  @@index([productId])
+}
+
+model Payment {
+  id        String        @id @default(uuid())
+  orderId   String        @unique
+  order     Order         @relation(fields: [orderId], references: [id])
+  amount    Decimal
+  status    PaymentStatus @default(PENDING)
+  method    PaymentMethod
+  createdAt DateTime      @default(now())
+
+  @@index([orderId])
+}
+
+model Coupon {
+  id        String    @id @default(uuid())
+  code      String    @unique
+  discount  Decimal // Percentage or flat amount
+  validFrom DateTime
+  validTo   DateTime
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([code])
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  PAYPAL
+  BANK_TRANSFER
+  CASH_ON_DELIVERY
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+model Address {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  street    String
+  city      String
+  state     String
+  country   String
+  zip       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
