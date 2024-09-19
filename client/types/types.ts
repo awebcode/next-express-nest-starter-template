@@ -22,3 +22,5 @@ export interface FileWithPreview {
   file: File;
   preview: string;
 }
+
+export type ClassName = React.HTMLAttributes<HTMLElement>["className"];

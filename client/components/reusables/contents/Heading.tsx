@@ -2,10 +2,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/utils/cn';
+
 interface HeadingPart {
     text: string | React.ReactNode;
     isSpan?: boolean;
-    spanClassName?: string;
+    spanClassName?: string
 }
 
 interface HeadingProps {
@@ -13,7 +14,8 @@ interface HeadingProps {
     fontSize?: string;
     align?: "text-left" | "text-center" | "text-right";
     subTitle?: string;
-    subTitleClassName?: string
+    subTitleClassName?: string,
+    className?: string
 }
 
 const Heading: React.FC<HeadingProps> = ({
@@ -21,10 +23,11 @@ const Heading: React.FC<HeadingProps> = ({
     fontSize = 'text-5xl', // Default font size
     align = 'text-left',
     subTitle = '',
-    subTitleClassName = ""
+    subTitleClassName = "",
+    className
 }) => {
     return (
-        <div className='prose prose-orange sm:prose-lg dark:prose-invert'>
+        <div className={cn('prose prose-orange sm:prose-lg dark:prose-invert', className, align)}>
 
             <motion.h1 initial={{ opacity: 0, y: 30, scale: 0.9, rotate: -5 }} // Start invisible, lower position, slightly smaller and rotated
                 whileInView={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}    // Animate to visible, original size, and position
@@ -35,7 +38,7 @@ const Heading: React.FC<HeadingProps> = ({
                     stiffness: 120,    // Controls how bouncy the spring is
                     damping: 10
                 }}        // Smoothens the bounceransition details
-                viewport={{ once: true }} className={`text-3xl md:${fontSize} ${align}  text-neutral-800 overflow-hidden leading-8 `}>
+                viewport={{ once: true }} className={`text-3xl md:${fontSize}   text-neutral-800 overflow-hidden leading-8 `}>
                 {parts.map((part, index) => (
                     <React.Fragment key={index}>
                         {part.isSpan ? (
@@ -57,7 +60,7 @@ const Heading: React.FC<HeadingProps> = ({
                     stiffness: 110,    // Controls how bouncy the spring is
                     damping: 11
                 }}        // Smoothens the bounceransition details
-                viewport={{ once: true }} className={`${align} ${subTitleClassName}  overflow-hidden my-2`}>{subTitle}</motion.p>
+                viewport={{ once: true }} className={cn(`overflow-hidden my-2`, subTitleClassName)}>{subTitle}</motion.p>
         </div>
     );
 };

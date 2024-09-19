@@ -1,12 +1,15 @@
 import type { Config } from "tailwindcss";
+import plugin from "tailwindcss/plugin";
 
 const config: Config = {
   darkMode: ["class"],
-  content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
+  content: {
+    files: [
+      "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+      "./components/**/*.{js,ts,jsx,tsx,mdx}",
+      "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    ],
+  },
   theme: {
     extend: {
       container: {
@@ -68,6 +71,22 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+ safelist: [
+   "bg-primary"
+ ],
+  plugins: [
+    require("tailwindcss-animate"),
+    plugin(function ({ addUtilities, addComponents, e, config }) {
+      const newUtilities = {
+        ".btn": { "@apply rounded-lg bg-blue-500 px-4 py-2 text-white": {} },
+        ".test": {
+          height: "200px",
+        },
+      };
+
+      addUtilities(newUtilities);
+      // Add your custom styles here
+    }),
+  ],
 };
 export default config;

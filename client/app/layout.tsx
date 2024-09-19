@@ -7,6 +7,8 @@ import Footer from "../components/Footer";
 import ScrollToTop from "../components/reusables/ScrollToTop";
 import { Toaster } from "@/components/ui/sonner";
 import QueryProvider from "@/providers/QueryProvider";
+import ProgressBar from "@/components/reusables/ProgressBar";
+// In app directory
 // import { ArticleJsonLd, DefaultSeo } from "next-seo";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "700", "900"], variable: "--font-poppins" });
@@ -41,7 +43,8 @@ export default function RootLayout({
             </footer>
           </QueryProvider>
           <Toaster toastOptions={{ duration: 3000, }} theme="light" />
-          <ScrollToTop  />
+          <ScrollToTop />
+          <ProgressBar/>
         </ThemeProvider>
       </body>
     </html>
