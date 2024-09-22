@@ -24,14 +24,14 @@ const Footer = () => {
                     <div>
                         <h1 className='text-2xl md:text-5xl font-bold text-gray-900'>Starter</h1>
                     </div>
-                   
+
 
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-x-20 gap-y-6">
                         {links.map((link, i) => (
                             <div key={i}>
                                 <Link href={link.link}>
-                                    <span className='transition-all hover:text-primary'>{link.name}</span>
+                                    <span className='transition-all hover:text-paragraphrimary'>{link.name}</span>
                                 </Link>
                             </div>
                         ))}

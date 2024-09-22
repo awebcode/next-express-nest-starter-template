@@ -45,7 +45,7 @@ const RegisterForm = () => {
   // Handle form submission
   const onSubmit = async (data: RegisterFormValues) => {
     try {
-     
+
       // Manually create a new object without `confirmPassword`
 
       // Alternatively, you can use Object.assign to create the new object
@@ -77,7 +77,7 @@ const RegisterForm = () => {
             fields={RegisterFields}
             submitButtonLabel="Register"
           />
-          
+
         </BlurCard>
         {/* Display errors as key-value pairs */}
         {Object.keys(errors).length > 0 && (

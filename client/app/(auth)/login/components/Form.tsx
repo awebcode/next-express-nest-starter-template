@@ -59,7 +59,7 @@ const LoginForm = () => {
                         submitButtonLabel="Login"
                     />
                 </BlurCard>
-                </Container>
+            </Container>
         </div>
     );
 };

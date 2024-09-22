@@ -39,7 +39,7 @@ const FileInput: React.FC<FileInputProps> = ({ onDrop, accept }) => {
                 }`}
         >
             <input {...getInputProps()} />
-            <FiUpload className="text-2xl md:text-6xl text-primary mb-4" />
+            <FiUpload className="text-2xl md:text-6xl text-paragraphrimary mb-4" />
             {isDragActive ? (
                 <p className="!text-blue-500 font-semibold animate-pulse">Drop the files here...</p>
             ) : (

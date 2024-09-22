@@ -1,6 +1,6 @@
 import type { Config } from "tailwindcss";
-import plugin from "tailwindcss/plugin";
-
+import customComponentsPlugin from "./public/styles/tw/custom-components";
+import customUtilitiesPlugin from "./public/styles/tw/custom-utility";
 const config: Config = {
   darkMode: ["class"],
   content: {
@@ -8,6 +8,7 @@ const config: Config = {
       "./pages/**/*.{js,ts,jsx,tsx,mdx}",
       "./components/**/*.{js,ts,jsx,tsx,mdx}",
       "./app/**/*.{js,ts,jsx,tsx,mdx}",
+      './public/**/*.{vue,js,ts,jsx,tsx}',
     ],
   },
   theme: {
@@ -76,17 +77,13 @@ const config: Config = {
  ],
   plugins: [
     require("tailwindcss-animate"),
-    plugin(function ({ addUtilities, addComponents, e, config }) {
-      const newUtilities = {
-        ".btn": { "@apply rounded-lg bg-blue-500 px-4 py-2 text-white": {} },
-        ".test": {
-          height: "200px",
-        },
-      };
-
-      addUtilities(newUtilities);
-      // Add your custom styles here
-    }),
+    customComponentsPlugin,
+    customUtilitiesPlugin,
+    // plugin(function ({ addUtilities, addComponents, e, config }) {
+    
+    //   addComponents({});
+    //   // Add your custom styles here
+    // }),
   ],
 };
 export default config;

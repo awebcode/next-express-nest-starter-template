@@ -33,7 +33,7 @@ const MobileMenus = () => {
         },
     };
 
-    
+
 
     const clickAwayRef = useClickAway<HTMLDivElement>(() => {
         setIsOpen(false);
@@ -49,11 +49,11 @@ const MobileMenus = () => {
                 onClick={() => setIsOpen(!isOpen)}
                 aria-label="Toggle menu"
             >
-                {isOpen ? <XIcon className="h-6 w-6 text-primary" /> : <MenuIcon className="h-6 w-6 text-primary" />}
+                {isOpen ? <XIcon className="h-6 w-6 text-paragraphrimary" /> : <MenuIcon className="h-6 w-6 text-paragraphrimary" />}
             </Button>
 
             {/* Backdrop for menu (adds a smooth fade-in overlay) */}
-           
+
 
             {/* Mobile Menu (Framer Motion Animation) */}
             <motion.div
@@ -70,7 +70,7 @@ const MobileMenus = () => {
                     onClick={() => setIsOpen(!isOpen)}
                     aria-label="Toggle menu"
                 >
-                    {isOpen && <XIcon className="h-6 w-6 text-primary" />}
+                    {isOpen && <XIcon className="h-6 w-6 text-paragraphrimary" />}
                 </Button>
 
                 <ul className="space-y-6">

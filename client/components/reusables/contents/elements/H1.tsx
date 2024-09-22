@@ -5,9 +5,9 @@ interface H1Props extends React.HTMLAttributes<HTMLHeadingElement> {
     children: React.ReactNode;
 }
 
-const H1: React.FC<H1Props> = ({ children, className = '', ...props }) => {
+const H1: React.FC<H1Props> = ({ children, className = 'text-neutral-900 dark:text-neutral-200', ...props }) => {
     return (
-        <h1 className={cn('text-3xl md:text-5xl font-bold text-neutral-900 dark:text-neutral-100 tracking-tight leading-7', className)} {...props}>
+        <h1 className={cn('text-heading1', className)} {...props}>
             {children}
         </h1>
     );

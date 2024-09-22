@@ -8,6 +8,8 @@ import ScrollToTop from "../components/reusables/ScrollToTop";
 import { Toaster } from "@/components/ui/sonner";
 import QueryProvider from "@/providers/QueryProvider";
 import ProgressBar from "@/components/reusables/ProgressBar";
+import ScrollLoader from "@/components/reusables/ScrollLoader";
+import { debounce } from "@/hooks/useDebounce";
 // In app directory
 // import { ArticleJsonLd, DefaultSeo } from "next-seo";
 
@@ -21,6 +23,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${poppins.className} ${poppins.variable} antialiased min-h-screen flex justify-around flex-col gap-4 `}>
@@ -31,20 +34,21 @@ export default function RootLayout({
           disableTransitionOnChange>
           <QueryProvider>
 
-          <Navbar />
-          {/* Blur background elements */}
-          {/* <div className="absolute top-[0%] left-[5%] h-[35rem] w-[45rem] bg-pink-200  rounded-full blur-3xl dark:bg-gray-800 "></div>
-          <div className="absolute top-[0%] right-[5%] h-[35rem] w-[45rem] bg-blue-200  rounded-full blur-3xl dark:bg-gray-700"></div> */}
-          <main className="flex-grow">
-            {children}
-          </main>
-          <footer>
-            <Footer/>
+            <Navbar />
+
+            <main className="flex-grow">
+              {children}
+            </main>
+            <footer>
+              <Footer />
             </footer>
           </QueryProvider>
           <Toaster toastOptions={{ duration: 3000, }} theme="light" />
           <ScrollToTop />
-          <ProgressBar/>
+
+          {/* when user will scrolling in the page it will show the loader */}
+          <ScrollLoader />
+          <ProgressBar />
         </ThemeProvider>
       </body>
     </html>
