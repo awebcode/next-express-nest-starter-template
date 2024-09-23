@@ -7,7 +7,7 @@ import Link from 'next/link'
 
 const Header = () => {
     return (
-        <header className='sticky top-0 z-50 bg-white/50 dark:bg-gray-800/50 border-b border-primary backdrop-blur-2xl'>
+        <header className='sticky top-0 z-50  border-b border-gray-400 backdrop-blur-2xl'>
             <BlurBg className='blur-3xl bg-purple-300 top-0 left-0' />
             <BlurBg  className='blur-3xl bg-pink-300 bottom-0 right-0'/>
             <div className="relative container max-w-7xl  h-16  mx-auto py-3 px-4 sm:px-6 lg:px-8">

@@ -35,7 +35,7 @@ const PrimaryButton: FC<ButtonProps> = ({
             <motion.button
                 {...animations}
                 {...props as any}
-                className={cn(`relative inline-flex h-10 md:h-14 overflow-hidden rounded-full p-[1px] w-full max-w-[150px] md:w-[200px] focus:outline-none `,className)}
+                className={cn(`relative inline-flex h-10 md:h-14 overflow-hidden rounded-full p-[1px] w-full max-w-[150px] md:w-[200px] focus:outline-none icon-box-shadow`,className)}
                 onClick={onClick}
             >
                 {/* Inner spinning gradient */}
@@ -45,6 +45,7 @@ const PrimaryButton: FC<ButtonProps> = ({
                     <span>{children}</span>
                     {!!iconRight && iconRight}
                 </span>
+                <span className="glow-before glow-after" />
             </motion.button>
         );
     } else {
@@ -52,7 +53,7 @@ const PrimaryButton: FC<ButtonProps> = ({
             <motion.button
                 {...animations}
                 className={cn(
-                    `flex items-center uppercase justify-center px-4 md:px-12 py-2 md:py-3 bg-primary text-white rounded hover:bg-purple-700 focus:outline-none `,  className 
+                    `relative flex items-center uppercase justify-center px-4 md:px-12 py-2 md:py-3 bg-primary text-white rounded hover:bg-purple-700 focus:outline-none icon-box-shadow`,  className
                 )}
                 onClick={onClick}
                 {...props as any}
@@ -60,6 +61,7 @@ const PrimaryButton: FC<ButtonProps> = ({
                 {!!iconLeft && iconLeft}
                 <span>{children}</span>
                 {!!iconRight && iconRight}
+                <span className="glow-before glow-after" />
             </motion.button>
         );
     }

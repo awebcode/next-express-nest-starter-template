@@ -113,8 +113,9 @@ body {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
-
+  /* END of Hero */
+  
 }
- .react-datepicker__current-month{
-   @apply !text-black dark:text-white
-  }
+.react-datepicker__current-month {
+  @apply !text-black dark:text-white;
+}
