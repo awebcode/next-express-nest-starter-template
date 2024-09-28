@@ -1,5 +1,5 @@
 import type { CookieOptions as ExpressCookieOptions } from 'express';
-import { ENV_VARIABLES } from './env.config';
+import { AppConfig } from './env.config';
 
 enum SAME_SITE {
   LAX = 'lax',
@@ -9,7 +9,7 @@ enum SAME_SITE {
 
 const baseCookieOptions: ExpressCookieOptions = {
   httpOnly: true,
-  secure: ENV_VARIABLES.nodeEnv === 'production',
+  secure: AppConfig.nodeEnv === 'production',
   sameSite: SAME_SITE.STRICT,
   path: '/',
 };

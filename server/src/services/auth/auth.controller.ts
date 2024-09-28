@@ -74,7 +74,7 @@ export class AuthController {
     description: 'Retrieves details of the authenticated user.',
     responseSchema: UpdateUserDto,
     errorResponses: {
-      404: 'User not found',
+      404: 'User does not exists',
     },
   })
   async getMe(@Req() req: Request) {
@@ -104,7 +104,7 @@ export class AuthController {
   }
 
   @Get('users')
-  @UseGuards(AuthGuard,RolesGuard)
+  @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
   @ApiDocs({
     summary: 'Get all users',
@@ -116,14 +116,14 @@ export class AuthController {
   }
 
   @Get('get-single-user/:id')
-  @UseGuards(AuthGuard,RolesGuard)
+  @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
   @ApiDocs({
     summary: 'Get single user details by ID',
     description: 'Retrieves details of an user.',
     responseSchema: UpdateUserDto,
     errorResponses: {
-      404: 'User not found',
+      404: 'User does not exists',
     },
   })
   async getSingleUser(@Param('id') id: string) {
@@ -138,7 +138,7 @@ export class AuthController {
     description: 'Allows admins to update a user’s details by their ID.',
     responseSchema: UpdateUserDto,
     errorResponses: {
-      404: 'User not found',
+      404: 'User does not exists',
     },
   })
   @ApiParam({ name: 'id', type: String, description: 'ID of the user to update' })
@@ -154,7 +154,7 @@ export class AuthController {
     description: 'Allows admins to delete a user by their ID.',
     responseSchema: { success: true, message: 'User deleted successfully' },
     errorResponses: {
-      404: 'User not found',
+      404: 'User does not exists',
     },
   })
   @ApiParam({ name: 'id', type: String, description: 'ID of the user to delete' })

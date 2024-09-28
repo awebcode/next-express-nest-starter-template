@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ENV_VARIABLES } from './config/env.config';
+import { AppConfig } from './config/env.config';
 import { setupSwagger } from './config/swagger.config';
 import * as cookieParser from 'cookie-parser';
 import * as express from 'express';
@@ -14,7 +14,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: WinstonModule.createLogger({
       instance: loggerInstance,
-      level: ENV_VARIABLES.logLevel || 'info',
+      level: AppConfig.logLevel || 'info',
     }),
   });
 
@@ -35,8 +35,8 @@ async function bootstrap() {
   // Set the global prefix for all routes
   app.setGlobalPrefix('/api/v1');
   // Start the server
-  await app.listen(ENV_VARIABLES.port || 5000, async () => {
-    console.log(`Application is running on: http://localhost:${ENV_VARIABLES.port || 5000}`);
+  await app.listen(AppConfig.port || 5000, async () => {
+    console.log(`Application is running on: http://localhost:${AppConfig.port || 5000}`);
   });
 }
 bootstrap();

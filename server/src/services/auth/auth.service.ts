@@ -4,7 +4,7 @@ import * as bcrypt from 'bcryptjs';
 import { PrismaService } from '../prisma.service';
 import { CreateUserDto, LoginDto, UpdateUserDto } from './dto/user.dto';
 import { getCookieOptions } from 'src/config/cookie.config';
-import { ENV_VARIABLES } from 'src/config/env.config';
+import { AppConfig } from 'src/config/env.config';
 import type { Request, Response } from 'express';
 import { logInfo } from 'src/utils/logger.utils';
 
@@ -20,24 +20,24 @@ export class AuthService {
    * Throws an exception if the email already exists.
    */
   async createUser(dto: CreateUserDto) {
-   try{
-     // Check if the user already exists
-    const existingUser = await this.prisma.user.findUnique({
-      where: { email: dto.email },
-    });
-    if (existingUser) {
-      throw new HttpException('User already exists', 409);
+    try {
+      // Check if the user already exists
+      const existingUser = await this.prisma.user.findUnique({
+        where: { email: dto.email },
+      });
+      if (existingUser) {
+        throw new HttpException('User already exists', 409);
+      }
+      console.log(dto);
+      // Hash the password and create the user
+      const hashedPassword = await bcrypt.hash(dto.password, 12);
+      const user = await this.prisma.user.create({
+        data: { ...dto, password: hashedPassword },
+      });
+      return { success: true, message: 'User created successfully', user };
+    } catch (err) {
+      throw new HttpException(err.message, err.status || 500);
     }
-console.log(dto)
-    // Hash the password and create the user
-    const hashedPassword = await bcrypt.hash(dto.password, 12);
-    const user = await this.prisma.user.create({
-      data: { ...dto, password: hashedPassword },
-    });
-    return { success: true, message: 'User created successfully', user };
-   }catch(err){
-     throw new HttpException(err.message,err.status||500);
-   }
   }
 
   /**
@@ -85,7 +85,7 @@ console.log(dto)
       backendTokens: {
         accessToken,
         refreshToken,
-        expiresAccessTokenAt: new Date().setTime(new Date().getTime() + ENV_VARIABLES.accessTokenExpiresIn * 1000),
+        expiresAccessTokenAt: new Date().setTime(new Date().getTime() + AppConfig.accessTokenExpiresIn * 1000),
       },
     };
   }
@@ -105,7 +105,7 @@ console.log(dto)
     try {
       // Verify the refresh token
       const payload = this.jwtService.verify(refreshToken, {
-        secret: ENV_VARIABLES.refreshTokenSecret,
+        secret: AppConfig.refreshTokenSecret,
       });
 
       // Remove the `exp` field from the payload before creating a new token
@@ -123,7 +123,7 @@ console.log(dto)
         backendTokens: {
           accessToken,
           refreshToken: newRefreshToken,
-          expiresAccessTokenAt: new Date().setTime(new Date().getTime() + ENV_VARIABLES.accessTokenExpiresIn * 1000),
+          expiresAccessTokenAt: new Date().setTime(new Date().getTime() + AppConfig.accessTokenExpiresIn * 1000),
         },
       };
     } catch (err) {
@@ -137,7 +137,7 @@ console.log(dto)
    */
   async getMe(req: Request) {
     if (!req.user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException('User does not exists');
     }
     const user = await this.getUserById(String(req.user.userId));
     return { success: true, user };
@@ -195,7 +195,7 @@ console.log(dto)
   async deleteUserByAdmin(id: string) {
     const user = await this.prisma.user.findUnique({ where: { id } });
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException('User does not exists');
     }
 
     await this.prisma.user.delete({ where: { id } });
@@ -211,7 +211,7 @@ console.log(dto)
     // Check if the user exists
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException('User does not exists');
     }
 
     await this.prisma.user.delete({ where: { id: userId } });
@@ -232,7 +232,7 @@ console.log(dto)
   private generateToken(payload: any, expiresIn: string, type?: string) {
     return this.jwtService.sign(payload, {
       expiresIn,
-      secret: type === 'access' ? ENV_VARIABLES.jwtSecret : ENV_VARIABLES.refreshTokenSecret,
+      secret: type === 'access' ? AppConfig.jwtSecret : AppConfig.refreshTokenSecret,
     });
   }
 

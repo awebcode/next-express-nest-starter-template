@@ -4,13 +4,13 @@ import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from '../../strategies/jwt.strategy'; // For access token validation
 import { RolesGuard } from '../../guards/roles.guard'; // For role-based authorization
-import { ENV_VARIABLES } from 'src/config/env.config';
+import { AppConfig } from 'src/config/env.config';
 import { PrismaService } from '../prisma.service';
 import { AuthGuard } from '../../guards/auth.guard';
 @Module({
   imports: [
     JwtModule.register({
-      secret: ENV_VARIABLES.jwtSecret,
+      secret: AppConfig.jwtSecret,
       signOptions: { expiresIn: '1h' }, // Access token expiration
     }),
   ],

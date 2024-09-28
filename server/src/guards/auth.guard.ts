@@ -2,7 +2,7 @@ import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from
 import { JwtService } from '@nestjs/jwt';
 import type { Request, Response } from 'express';
 import { getCookieOptions } from 'src/config/cookie.config';
-import { ENV_VARIABLES } from 'src/config/env.config';
+import { AppConfig } from 'src/config/env.config';
 import { logInfo } from 'src/utils/logger.utils';
 
 @Injectable()
@@ -24,8 +24,8 @@ export class AuthGuard implements CanActivate {
     }
 
     // Verify access token
-    if (accessToken && this.isTokenValid(accessToken, ENV_VARIABLES.jwtSecret)) {
-      const decoded = this.jwtService.verify(accessToken, { secret: ENV_VARIABLES.jwtSecret });
+    if (accessToken && this.isTokenValid(accessToken, AppConfig.jwtSecret)) {
+      const decoded = this.jwtService.verify(accessToken, { secret: AppConfig.jwtSecret });
       this.tokenCache.set(accessToken, decoded);
       request.user = decoded;
       return true;
@@ -38,11 +38,11 @@ export class AuthGuard implements CanActivate {
     }
 
     try {
-      const refreshTokenPayload = this.jwtService.verify(refreshToken, { secret: ENV_VARIABLES.refreshTokenSecret });
+      const refreshTokenPayload = this.jwtService.verify(refreshToken, { secret: AppConfig.refreshTokenSecret });
       accessToken = this.jwtService.sign(
         { userId: refreshTokenPayload.userId, role: refreshTokenPayload.role },
         {
-          secret: ENV_VARIABLES.jwtSecret,
+          secret: AppConfig.jwtSecret,
           expiresIn: '1h',
         },
       );

@@ -1,4 +1,4 @@
-export const ENV_VARIABLES = {
+export const AppConfig = {
   jwtSecret: process.env.JWT_SECRET,
   refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET,
   accessTokenExpiresIn: parseInt(process.env.ACCESS_TOKEN_EXPIRE) || 60 * 60,
