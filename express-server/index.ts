@@ -1,18 +1,16 @@
 import express from "express";
 import errorHandler, { NotFoundExceptionMiddleware } from "./middlewares/errorHandlerMiddleware";
 import config from "./config/global.config"; // Import the consolidated config
-import globalRouter from "./routes"; // Import the global router
+import globalRouter from "./modules/global.routes"; // Import the global router
 import cors from "cors";
 import { setupSwagger } from "./config/swagger.config";
 import { config as dotenvConfig } from "dotenv";
 import morgan from "morgan";
 import { loggerInstance } from "./config/logger.config";
 import { AppConfig } from "./config/env.config";
-import { sendEmail } from "./config/nodemailer.config";
 import cookieParser from "cookie-parser";
 const app = express();
 dotenvConfig();
-const PORT = AppConfig.port
 
 //@ Setup Swagger
 setupSwagger(app);
@@ -48,6 +46,6 @@ app.use(NotFoundExceptionMiddleware);
 app.use(errorHandler);
 
 // Start the server
-app.listen(PORT, () => {
-  console.info(`Server is running on http://localhost:${PORT}`);
+app.listen(AppConfig.port, () => {
+  console.info(`Server is running on http://localhost:${AppConfig.port}`);
 });

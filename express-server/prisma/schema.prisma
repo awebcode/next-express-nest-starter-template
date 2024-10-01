@@ -25,7 +25,7 @@ model User {
   password         String
   name             String
   emailVerified    DateTime?
-  resetToken       String?  @unique
+  resetToken       String?   @unique
   resetTokenExpiry DateTime?
   image            String?
   providerId       String?   @default("credential")
@@ -37,6 +37,7 @@ model User {
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
   sessions         Session[] // for login sessions and authentication
+  Product          Product[]
 
   @@index([email])
 }
@@ -66,6 +67,8 @@ model Product {
   discountedPrice Decimal? // Nullable field for discounted price
   stock           Int              @default(0)
   slug            String           @unique // Unique slug for SEO
+  userId          String
+  user            User             @relation(fields: [userId], references: [id])
   categories      Category[]
   images          ProductImage[]
   reviews         Review[] // Relation to product reviews

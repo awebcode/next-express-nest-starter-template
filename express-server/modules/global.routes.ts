@@ -1,15 +1,16 @@
 import { Router } from "express";
-import userRoute from "./userRoute";
-import emailRoute from "./emailRoute";
+import userRoutes from "./user/user.routes";
+import emailRoutes from "./email/email.routes";
+import productRoutes from "./products/product.routes";
 // Import other routes as needed
 
 const router = Router();
 
 // Define routes
-router.use("/user", userRoute);
-router.use("/email", emailRoute);
+router.use("/user", userRoutes);
+router.use("/products",productRoutes)
+router.use("/email", emailRoutes);
 // Add other route paths here, e.g.:
-// router.use('/products', productRoute);
 // router.use('/orders', orderRoute);
 
 // You can also define other routes directly

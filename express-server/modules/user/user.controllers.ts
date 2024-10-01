@@ -1,5 +1,5 @@
 import { Request, Response, type NextFunction } from "express";
-import { userService } from "./user.service";
+import { userService } from "./user.services";
 import { AppError } from "../../types/errorTypes";
 import prisma from "../../prisma/prismaClient";
 import { RegisterDTO, LoginDTO, UpdateUserDto } from "./user.dto";
